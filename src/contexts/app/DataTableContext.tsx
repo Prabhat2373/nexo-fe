@@ -1,15 +1,6 @@
-import { QueryParamFunctions, useQueryParam } from "@/hooks/useQueryParams";
-import { initialParams } from "@/features/settings/config/table/table.config";
-// import { useQueryParam } from '@/lib/Params'
-import Query from "@/lib/Query";
+import { initialTableParams } from "@/config/table/data-table.config";
 import { ColumnDef } from "@tanstack/react-table";
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { createContext, useContext, useState } from "react";
 
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -25,10 +16,10 @@ export interface DataTableProps<TData, TValue> {
   showNumbering?: boolean;
   lazyQueryHook?: any;
   extraFilters?: any;
-  qry?: Query;
+
   table?: any;
   query?: any;
-  queryOptions?: QueryParamFunctions;
+
   isLoading: boolean;
 }
 
@@ -38,10 +29,23 @@ interface DataTableContextValue<TData, TValue> {
     React.SetStateAction<DataTableProps<TData, TValue>>
   >;
   query: any;
-  queryOptions: QueryParamFunctions;
+  // queryOptions: QueryParamFunctions;
+  tableQuery: any;
   refetch: () => void;
   selectedRows: any[];
   setSelectedRows: React.Dispatch<React.SetStateAction<never[]>>;
+  setTableParams: React.Dispatch<
+    React.SetStateAction<{
+      limit: number;
+      page: number;
+      sort: string;
+    }>
+  >;
+  tableParams: {
+    limit: number;
+    page: number;
+    sort: string;
+  };
 }
 
 const DataTableContext = createContext<
@@ -69,6 +73,8 @@ export const DataTableContextProvider = <TData, TValue>({
     DataTableProps<TData, TValue>
   >({});
 
+  const [tableParams, setTableParams] = React.useState(initialTableParams);
+
   const [selectedRows, setSelectedRows] = useState([]);
 
   // const [queryId, setQueryId] = useState('')
@@ -88,9 +94,11 @@ export const DataTableContextProvider = <TData, TValue>({
     setDataTableProps,
     refetch: dataTableProps?.refetch,
     query: dataTableProps?.query,
-    queryOptions: dataTableProps?.queryOptions,
+    tableQuery: dataTableProps?.tableQuery,
     setSelectedRows,
     selectedRows,
+    setTableParams,
+    tableParams,
     // query,
     // queryOptions,
   };

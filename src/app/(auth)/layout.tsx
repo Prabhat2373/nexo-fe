@@ -27,8 +27,8 @@ export default function CoreAuthLayout({
         <StoreProvider>
           <AppProvider>
             <ToastContainer />
-            {/* <AuthLayout>{children}</AuthLayout> */}
-            {children}
+            <AuthLayout>{children}</AuthLayout>
+            {/* {children} */}
           </AppProvider>
         </StoreProvider>
       </body>

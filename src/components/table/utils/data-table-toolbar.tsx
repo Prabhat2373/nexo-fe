@@ -1,6 +1,12 @@
 "use client";
 
-import { Cross2Icon } from "@radix-ui/react-icons";
+import {
+  Cross2Icon,
+  ResetIcon,
+  ReloadIcon,
+  RotateCounterClockwiseIcon,
+  UpdateIcon,
+} from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
@@ -47,6 +53,7 @@ export function DataTableToolbar<TData>({
             options={priorities}
           />
         )}
+
         {isFiltered && (
           <Button
             variant="ghost"
@@ -58,6 +65,13 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
+      <Button
+        variant="outline"
+        // onClick={() => table.resetColumnFilters()}
+        className="h-8 px-2 lg:px-3 mx-2"
+      >
+        <UpdateIcon className=" h-4 w-4 " />
+      </Button>
       <DataTableViewOptions table={table} />
     </div>
   );

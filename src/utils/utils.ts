@@ -29,3 +29,12 @@ export const getAcronym = (input: string): string => {
     .join("")
     .toUpperCase();
 };
+
+export const debounce = (fn: any, timeout: number) => {
+  let timer: number = null;
+  // setLoader(true)
+  return (...args) => {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(fn, timeout, ...args);
+  };
+};

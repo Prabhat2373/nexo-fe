@@ -26,6 +26,9 @@ import {
 } from "@/components/ui/table";
 import { DataTableToolbar } from "./utils/data-table-toolbar";
 import { DataTablePagination } from "./utils/data-table-pagination";
+import { debounce } from "@/utils/utils";
+import { initialTableParams } from "@/config/table/data-table.config";
+import { useDataTableContext } from "@/contexts/app/DataTableContext";
 
 // import { DataTablePagination } from "./data-table-pagination";
 // import { DataTableToolbar } from "./data-table-toolbar";
@@ -33,11 +36,13 @@ import { DataTablePagination } from "./utils/data-table-pagination";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  lazyQueryHook: any;
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  data,
+  // data,
+  lazyQueryHook,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -45,10 +50,24 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const { tableParams, setTableParams } = useDataTableContext();
+  const [tableData, setTableData] = React.useState([]);
+  const [loadData, { data, isFetching: isLoading }] = lazyQueryHook;
+
+  const debouncedLoad = React.useCallback(
+    debounce((params) => {
+      // setIsLoading(true);
+      loadData(params).then(() => {
+        // setIsLoading(false);
+      });
+    }, 500),
+    []
+  );
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useReactTable({
-    data,
+    data: tableData,
     columns,
     state: {
       sorting,
@@ -68,6 +87,15 @@ export function DataTable<TData, TValue>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
+
+  React.useEffect(() => {
+    console.log("data?.data", data?.data);
+    setTableData(data?.data);
+  }, [data]);
+
+  React.useEffect(() => {
+    debouncedLoad(tableParams);
+  }, [debouncedLoad, tableParams]);
 
   return (
     <div className="space-y-4">
