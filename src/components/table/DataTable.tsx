@@ -35,7 +35,7 @@ import { useDataTableContext } from "@/contexts/app/DataTableContext";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+  // data: TData[];
   lazyQueryHook: any;
 }
 
@@ -53,17 +53,17 @@ export function DataTable<TData, TValue>({
   const { tableParams, setTableParams } = useDataTableContext();
   const [tableData, setTableData] = React.useState([]);
   const [loadData, { data, isFetching: isLoading }] = lazyQueryHook;
-
+  console.log("tableLoading", isLoading);
+  const { setDataTableProps, dataTableProps } = useDataTableContext();
   const debouncedLoad = React.useCallback(
     debounce((params) => {
-      // setIsLoading(true);
       loadData(params).then(() => {
         // setIsLoading(false);
       });
     }, 500),
     []
   );
-
+  console.log("tableData", tableData);
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useReactTable({
@@ -88,14 +88,42 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  React.useEffect(() => {
-    console.log("data?.data", data?.data);
-    setTableData(data?.data);
-  }, [data]);
-
-  React.useEffect(() => {
+  const fetchTable = React.useCallback(() => {
     debouncedLoad(tableParams);
   }, [debouncedLoad, tableParams]);
+
+  React.useEffect(() => {
+    setDataTableProps({
+      table,
+      refetch: fetchTable,
+      data: tableData,
+      // isLoading,
+    });
+  }, [fetchTable, setDataTableProps, table, tableData]);
+
+  React.useEffect(() => {
+    setDataTableProps({
+      ...dataTableProps,
+      isLoading,
+    });
+  }, [isLoading]);
+
+  React.useEffect(() => {
+    console.log("datatable", data);
+    setTableData(data?.data || []);
+  }, [data]);
+
+  console.log("tablefilter", table.getState().columnFilters);
+
+  React.useEffect(() => {
+    fetchTable();
+  }, [
+    tableParams.limit,
+    tableParams.page,
+    tableParams.sort,
+    tableParams?.search,
+    fetchTable,
+  ]);
 
   return (
     <div className="space-y-4">

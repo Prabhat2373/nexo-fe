@@ -46,6 +46,7 @@ interface DataTableContextValue<TData, TValue> {
     page: number;
     sort: string;
   };
+  setParamValue: (field: string, value: any) => void;
 }
 
 const DataTableContext = createContext<
@@ -75,6 +76,13 @@ export const DataTableContextProvider = <TData, TValue>({
 
   const [tableParams, setTableParams] = React.useState(initialTableParams);
 
+  const setParamValue = (field: string, value?: any) => {
+    setTableParams({
+      ...tableParams,
+      [field]: value,
+    });
+  };
+
   const [selectedRows, setSelectedRows] = useState([]);
 
   // const [queryId, setQueryId] = useState('')
@@ -99,6 +107,7 @@ export const DataTableContextProvider = <TData, TValue>({
     selectedRows,
     setTableParams,
     tableParams,
+    setParamValue,
     // query,
     // queryOptions,
   };
