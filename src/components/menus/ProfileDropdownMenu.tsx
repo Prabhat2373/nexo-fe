@@ -52,7 +52,7 @@ const ProfileDropdownMenu = () => {
       <DropdownMenuTrigger asChild>
         <Avatar className="cursor-pointer">
           <AvatarImage src={user?.avatar} alt="@shadcn" />
-          <AvatarFallback>{getAcronym(user?.name)}</AvatarFallback>
+          <AvatarFallback>{getAcronym(user?.name) || "PT"}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">

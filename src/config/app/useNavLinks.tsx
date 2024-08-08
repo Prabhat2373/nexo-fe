@@ -64,6 +64,13 @@ const useNavLinks = () => {
       href: "/tables",
     },
     {
+      title: "Menu",
+      label: "",
+      icon: Dock,
+      variant: "ghost",
+      href: "/menus",
+    },
+    {
       title: "Posts",
       label: "23",
       icon: ArchiveX,

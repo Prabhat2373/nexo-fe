@@ -16,7 +16,33 @@ export const setupApi = createApi({
         url: `restaurants/${params?.restaurant}/tables/${params?.quantity}`,
       }),
     }),
+    getRestaurantMenus: builder.query({
+      query: (params) => ({
+        url: `/restaurants/menu-items`,
+        params,
+      }),
+    }),
+    getPredefinedMenus: builder.query({
+      query: (params) => ({
+        url: `/predefined-menu-items`,
+        params,
+      }),
+    }),
+    addMenu: builder.mutation({
+      query: (body) => ({
+        url: `restaurants/menu-items`,
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useLazyGetAllTablesQuery, useAddNewTableMutation } = setupApi;
+export const {
+  useLazyGetAllTablesQuery,
+  useAddNewTableMutation,
+  useLazyGetRestaurantMenusQuery,
+  useLazyGetPredefinedMenusQuery,
+  useGetPredefinedMenusQuery,
+  useAddMenuMutation,
+} = setupApi;

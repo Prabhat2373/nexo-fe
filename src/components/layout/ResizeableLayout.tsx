@@ -67,72 +67,74 @@ export function ResizeableLayout({
 
   return (
     <>
-      <div className="hidden sm:block">
-        <TooltipProvider delayDuration={0}>
-          <ResizablePanelGroup
-            ref={panelGroupRef}
-            direction="horizontal"
-            onLayout={(sizes: number[]) => {
-              console.log("sizes", sizes);
-              document.cookie = `react-resizable-panels:layout=${JSON.stringify(
-                sizes
-              )}`;
-            }}
-            style={{
-              overflow: "visible",
-            }}
-            className="h-full max-h-[800px] items-stretch hidden"
-          >
-            <ResizablePanel
-              defaultSize={defaultLayout[0]}
-              collapsedSize={navCollapsedSize}
-              collapsible={true}
-              minSize={15}
-              maxSize={20}
-              onCollapse={(collapsed) => {
-                setIsCollapsed(collapsed);
-                document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-                  collapsed
+      <section>
+        <div className="hidden sm:block">
+          <TooltipProvider delayDuration={0}>
+            <ResizablePanelGroup
+              ref={panelGroupRef}
+              direction="horizontal"
+              onLayout={(sizes: number[]) => {
+                console.log("sizes", sizes);
+                document.cookie = `react-resizable-panels:layout=${JSON.stringify(
+                  sizes
                 )}`;
               }}
-              className={cn(
-                isCollapsed &&
-                  "min-w-[50px] transition-all duration-300 ease-in-out"
-              )}
-            >
-              <div
-                className={cn(
-                  "flex h-[59px] items-center justify-center px-2"
-                  //   isCollapsed ? "h-[52px]" : "px-2"
-                )}
-              >
-                <AccountSwitcher
-                  isCollapsed={isCollapsed}
-                  accounts={accounts}
-                />
-              </div>
-              <Separator />
-              <Nav isCollapsed={isCollapsed} links={primaryNavLinks} />
-              <Separator />
-            </ResizablePanel>
-            <ResizableHandle withHandle />
-            <ResizablePanel
-              defaultSize={defaultLayout[1]}
-              minSize={30}
               style={{
                 overflow: "visible",
               }}
+              className="h-full max-h-[800px] items-stretch hidden"
             >
-              <MainHeader />
-              <main className="h-[90vh] overflow-scroll">{children}</main>
-            </ResizablePanel>
-          </ResizablePanelGroup>
-        </TooltipProvider>
-      </div>
-      <div className="sm:hidden">
-        <MainHeader />
-        <ScrollArea className="h-screen">{children}</ScrollArea>
-      </div>
+              <ResizablePanel
+                defaultSize={defaultLayout[0]}
+                collapsedSize={navCollapsedSize}
+                collapsible={true}
+                minSize={15}
+                maxSize={20}
+                onCollapse={(collapsed) => {
+                  setIsCollapsed(collapsed);
+                  document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
+                    collapsed
+                  )}`;
+                }}
+                className={cn(
+                  isCollapsed &&
+                    "min-w-[50px] transition-all duration-300 ease-in-out"
+                )}
+              >
+                <div
+                  className={cn(
+                    "flex h-[59px] items-center justify-center px-2"
+                    //   isCollapsed ? "h-[52px]" : "px-2"
+                  )}
+                >
+                  <AccountSwitcher
+                    isCollapsed={isCollapsed}
+                    accounts={accounts}
+                  />
+                </div>
+                <Separator />
+                <Nav isCollapsed={isCollapsed} links={primaryNavLinks} />
+                <Separator />
+              </ResizablePanel>
+              <ResizableHandle withHandle />
+              <ResizablePanel
+                defaultSize={defaultLayout[1]}
+                minSize={30}
+                style={{
+                  overflow: "visible",
+                }}
+              >
+                <MainHeader />
+                <main className="h-[90vh] overflow-scroll">{children}</main>
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </TooltipProvider>
+        </div>
+        <div className="sm:hidden">
+          <MainHeader />
+          <ScrollArea className="h-screen">{children}</ScrollArea>
+        </div>
+      </section>
     </>
   );
 }

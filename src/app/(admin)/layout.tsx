@@ -1,15 +1,11 @@
+import AppProvider from "@/hoc/app/AppProvider";
+import StoreProvider from "@/hoc/app/StoreProvider";
+import AppLayout from "@/layouts/AppLayout";
+import "@styles/globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "@styles/globals.css";
-import StoreProvider from "@/hoc/app/StoreProvider";
-import AppProvider from "@/hoc/app/AppProvider";
-import { Suspense, useEffect } from "react";
-import { ToastContainer } from "react-toastify";
-import Header from "@/components/layout/Header";
-import AppLayout from "@/layouts/AppLayout";
-import { cookies } from "next/headers";
+import { Suspense } from "react";
 import Loading from "./loading";
-import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 

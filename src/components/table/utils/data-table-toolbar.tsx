@@ -34,6 +34,7 @@ export function DataTableToolbar<TData>({
   const { setTableParams, tableParams, refetch, dataTableProps } =
     useDataTableContext();
   const isLoading = dataTableProps?.isLoading;
+  const tableFilters = dataTableProps?.tableFilters;
   console.log("isLoading", isLoading);
 
   console.log("tableParams", tableParams);
@@ -43,7 +44,7 @@ export function DataTableToolbar<TData>({
       <div className="flex flex-1 items-center space-x-2">
         <Input
           type="search"
-          placeholder="Filter tasks..."
+          placeholder="Search..."
           value={tableParams?.search || ""}
           onChange={(event) =>
             // table.getColumn("search")?.setFilterValue(event.target.value)
@@ -54,21 +55,7 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        {table.getColumn("status") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("status")}
-            title="Status"
-            options={statuses}
-          />
-        )}
-        {table.getColumn("priority") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("priority")}
-            title="Priority"
-            options={priorities}
-          />
-        )}
-
+        {tableFilters ? <>{tableFilters}</> : null}
         {isFiltered && (
           <Button
             variant="ghost"

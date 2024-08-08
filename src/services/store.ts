@@ -37,6 +37,8 @@ import { profileApi } from "./rtk/profileApi";
 import { rtkErrorHandler } from "@/middlewares/rtkErrorHandler";
 import { authorApi } from "./rtk/authorApi";
 import { ordersApi } from "./rtk/ordersApi";
+import { setupApi } from "./rtk/setupApi";
+import { restaurantsApi } from "./rtk/restaurantsApi";
 
 // presist config
 const persistConfig = {
@@ -54,6 +56,8 @@ export const store = configureStore({
     [profileApi.reducerPath]: profileApi.reducer,
     [authorApi.reducerPath]: authorApi.reducer,
     [ordersApi.reducerPath]: ordersApi.reducer,
+    [setupApi.reducerPath]: setupApi.reducer,
+    [restaurantsApi.reducerPath]: restaurantsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({})
@@ -61,6 +65,8 @@ export const store = configureStore({
       .concat(authorApi.middleware)
       .concat(profileApi.middleware)
       .concat(ordersApi.middleware)
+      .concat(setupApi.middleware)
+      .concat(restaurantsApi.middleware)
       .concat(rtkErrorHandler),
 });
 export const persistor = persistStore(store);
